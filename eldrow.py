@@ -53,7 +53,7 @@ BATCH_LENGTH = 100
 
 # Loads a file containing accepted words (extracted from wordle's javascript)
 # Each word has a score associated with it.
-# For version of the file in the repo, the value is computed based on the
+# For the file in the repo, the value was computed based on the
 # word frequency with a negative bias for repeated letters
 def load_words(fname):
     scores = {}
@@ -341,8 +341,8 @@ def copy_ws(ws):
 
 
 def set_word(ws, word):
+    ws.candidates = [word]
     for i, chr in enumerate(word):
-        ws.candidates = [word]
         ws.letters[i] = set(chr)
 
 #######################
