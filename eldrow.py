@@ -6,7 +6,7 @@ from types import SimpleNamespace
 
 ################################################################################
 # Usage: Fill in this section and run the script, it will output all possible
-#        solutions in order of (subjective) likelyhood.
+#        solutions in order of (subjective) likelyhood, pausing between batches.
 
 # The solution to the wordle
 SOLUTION = "banal"
