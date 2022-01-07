@@ -180,11 +180,9 @@ def get_possible_misplaced(previous, current, next):
         and previous.guess.correct == current.guess.correct
         and len(previous.guess.misplaced) == len(current.guess.misplaced)
     ):
-        tmp = set()
-        for m in previous.guess.misplaced:
-            tmp.update(previous.letters[m])
-
-        result &= tmp
+        result &= set.union(
+            *[previous.letters[m] for m in previous.guess.misplaced]
+        )
     return result
 
 
@@ -220,6 +218,9 @@ def validate(data):
 def calculate_score(data):
     total = 0.0
     for ws in data:
+        # The candidates are always sorted from highest score down
+        # so we only need to look at the first one in the list to know
+        # the max value.
         total += WORD_SCORES[ws.candidates[0]]
     return total
 
@@ -243,10 +244,7 @@ class SolutionNode:
         result = []
 
         for word in self.data[self.depth].candidates:
-            # It is possible that we have landed in a dead end...
-            c_data = list(self.data)
-            for i in range(self.depth, len(c_data)):
-                c_data[i] = copy_ws(c_data[i])
+            c_data = [copy_ws(x) for x in self.data]
 
             set_word(c_data[self.depth], word)
             result.append(c_data)
@@ -258,6 +256,14 @@ class SolutionNode:
 
 
 def solutions(data):
+    # In order to understand why the algorithm is set up the way it is, 
+    # consider that the primary objective is to output the likeliest 
+    # solutions as fast as possible  
+    # By settings things up as a dijstra search, we know that the results
+    # will be produced from highest to lowest likelyhood, which lets us
+    # stream them out as they are found, and lets users early-out 
+    # after a few solutions.
+    
     todo = PriorityQueue()
 
     todo.put(SolutionNode(data, 0))
