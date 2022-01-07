@@ -11,7 +11,8 @@ from types import SimpleNamespace
 # The solution to the wordle
 SOLUTION = "banal"
 
-# The guesses that were made
+# The guesses that were made. You can simply copy-paste the contents of Wordle's
+# "share" feature directly here.
 RAW_GUESSES_TXT = """
 ⬜⬜🟨⬜⬜
 ⬜🟩⬜⬜⬜
